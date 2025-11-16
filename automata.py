@@ -1,8 +1,9 @@
+#---------------------------------------
 import tkinter as tk
 from tkinter import messagebox
-
+#---------------------------------------
 class AutomataGUI:
-
+    
     def __init__(self, master):
         self.master = master
         master.title("Autómata Finito - Atención Farmacéutica")
@@ -31,7 +32,7 @@ class AutomataGUI:
         ventana_principal.pack(pady=10)
 
         tk.Button(ventana_principal, text="PERFUMERÍA (P01)", width=20, bg="#d9ead3", command=self.perfumeria).grid(row=0, column=0, padx=10, pady=5)
-        tk.Button(ventana_principal, text="SIN RECETA (S01)", width=20, bg="#fff2cc", command=self.sin_receta).grid(row=0, column=1, padx=10, pady=5)
+        tk.Button(ventana_principal, text="SIN RECETA (S01)", width=20, bg="#5A4E28", command=self.sin_receta).grid(row=0, column=1, padx=10, pady=5)
         tk.Button(ventana_principal, text="CON RECETA (C01)", width=20, bg="#cfe2f3", command=self.con_receta).grid(row=1, column=0, columnspan=2, pady=10)
 
         # --- Subbotones para el flujo "CON RECETA" ---
