@@ -13,7 +13,7 @@ class AutomataGUI:
         # Estados de aceptación
         self.estados_aceptados = {"qP", "qS", "qZ"}
 
-        self.state = "q0"
+        self.estado = "q0"
 
         # Etiqueta del estado actual
         self.estado_label = tk.Label(
@@ -32,7 +32,7 @@ class AutomataGUI:
         ventana_principal.pack(pady=10)
 
         tk.Button(ventana_principal, text="PERFUMERÍA (P01)", width=20, bg="#d9ead3", command=self.perfumeria).grid(row=0, column=0, padx=10, pady=5)
-        tk.Button(ventana_principal, text="SIN RECETA (S01)", width=20, bg="#5A4E28", command=self.sin_receta).grid(row=0, column=1, padx=10, pady=5)
+        tk.Button(ventana_principal, text="SIN RECETA (S01)", width=20, bg="#E2D8B8", command=self.sin_receta).grid(row=0, column=1, padx=10, pady=5)
         tk.Button(ventana_principal, text="CON RECETA (C01)", width=20, bg="#cfe2f3", command=self.con_receta).grid(row=1, column=0, columnspan=2, pady=10)
 
         # --- Subbotones para el flujo "CON RECETA" ---
@@ -57,28 +57,28 @@ class AutomataGUI:
     # ----------------- Métodos de transición del programa -----------------
     def actualizar_estado_label(self, text):
         """Actualiza el color y texto del título según el estado."""
-        color = "green" if self.state in self.estados_aceptados else "red"
+        color = "green" if self.estado in self.estados_aceptados else "red"
         self.estado_label.config(text=text, fg=color)
 
     def perfumeria(self):
-        if self.state == "q0":
-            self.state = "qP"
+        if self.estado == "q0":
+            self.estado = "qP"
             self.actualizar_estado_label("Estado actual: qP (PERFUMERÍA)")
             self.salida_label.config(text="✅ SE ATIENDE EN X (PERFUMERÍA)")
         else:
             self.transicion_no_valida()
 
     def sin_receta(self):
-        if self.state == "q0":
-            self.state = "qS"
+        if self.estado == "q0":
+            self.estado = "qS"
             self.actualizar_estado_label("Estado actual: qS (SIN RECETA)")
             self.salida_label.config(text="✅ SE ATIENDE EN Y (SIN RECETA)")
         else:
             self.transicion_no_valida()
 
     def con_receta(self):
-        if self.state == "q0":
-            self.state = "qC"
+        if self.estado == "q0":
+            self.estado = "qC"
             self.actualizar_estado_label("Estado actual: qC (CON RECETA)")
             self.salida_label.config(text="🔍 Requiere verificación: OBRA SOCIAL y RECETA MÉDICA")
             self.frame_con_receta.pack(pady=10)
@@ -86,12 +86,12 @@ class AutomataGUI:
             self.transicion_no_valida()
 
     def obra_social(self):
-        if self.state == "qC":
-            self.state = "qC_OBRA"
-            self.actualizar_estado_label("Estado actual: qC_OBRA (OBRA SOCIAL recibida)")
+        if self.estado == "qC":
+            self.estado = "qO"
+            self.actualizar_estado_label("Estado actual: qO (OBRA SOCIAL recibida)")
             self.salida_label.config(text="✔ OBRA SOCIAL registrada. Falta RECETA MÉDICA.")
-        elif self.state == "qC_REC":
-            self.state = "qZ"
+        elif self.estado == "qR":
+            self.estado = "qZ"
             self.actualizar_estado_label("Estado actual: qZ (Verificación completa)")
             self.salida_label.config(text="✅ SE ATIENDE EN Z (CON RECETA)")
             self.frame_con_receta.pack_forget()
@@ -99,12 +99,12 @@ class AutomataGUI:
             self.transicion_no_valida()
 
     def receta_medica(self):
-        if self.state == "qC":
-            self.state = "qC_REC"
-            self.actualizar_estado_label("Estado actual: qC_REC (RECETA MÉDICA recibida)")
+        if self.estado == "qC":
+            self.estado = "qR"
+            self.actualizar_estado_label("Estado actual: qR (RECETA MÉDICA recibida)")
             self.salida_label.config(text="✔ RECETA MÉDICA registrada. Falta OBRA SOCIAL.")
-        elif self.state == "qC_OBRA":
-            self.state = "qZ"
+        elif self.estado == "qO":
+            self.estado = "qZ"
             self.actualizar_estado_label("Estado actual: qZ (Verificación completa)")
             self.salida_label.config(text="✅ SE ATIENDE EN Z (CON RECETA)")
             self.frame_con_receta.pack_forget()
@@ -112,13 +112,13 @@ class AutomataGUI:
             self.transicion_no_valida()
 
     def reiniciar(self):
-        self.state = "q0"
+        self.estado = "q0"
         self.actualizar_estado_label("Estado actual: q0 (Inicio)")
         self.salida_label.config(text="")
         self.frame_con_receta.pack_forget()
 
     def transicion_no_valida(self):
-        messagebox.showwarning("Transición inválida", f"No se puede transicionar desde {self.state}.")
+        messagebox.showwarning("Transición inválida", f"No se puede transicionar desde {self.estado}.")
         self.salida_label.config(text="⚠️ Transición inválida")
 
 # ----------------- Programa principal -----------------
